@@ -153,7 +153,7 @@ class decode_model(persona):
 
     def ReadDictDecode(self):
         self.voc_decode = dict()
-        with open(path.join(self.params.data_folder, self.params.dictPath), 'r') as doc:
+        with open(path.join(self.params.data_folder, self.params.dictPath), 'r', encoding="utf-8") as doc:
             for line in doc:
                 self.voc_decode[len(self.voc_decode)] = line.strip()
 
@@ -220,7 +220,7 @@ class decode_model(persona):
         for i in range(self.source_size):
             if self.params.response_only:
                 print_string = self.id2word(completed_history[i].cpu().numpy())
-                with open(decode_output, "a") as file:
+                with open(decode_output, "a", encoding="utf-8") as file:
                     file.write(print_string + "\n")
             else:
                 ### If the data contains words, not numbers:
@@ -228,5 +228,5 @@ class decode_model(persona):
                 print_string = self.id2word(self.origin[i])
                 print_string += "|"
                 print_string += self.id2word(completed_history[i].cpu().numpy())
-                with open(decode_output, "a") as file:
+                with open(decode_output, "a", encoding="utf-8") as file:
                     file.write(print_string + "\n")
