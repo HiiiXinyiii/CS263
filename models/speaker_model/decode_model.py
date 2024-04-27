@@ -191,8 +191,7 @@ class decode_model(persona):
         batch_n = 0
         n_decode_instance = 0
         while END == 0:
-            END, sources, targets, speaker_label, addressee_label, length, token_num, origin = self.Data.read_batch(
-                open_train_file, batch_n, self.mode)
+            END, sources, targets, speaker_label, addressee_label, length, token_num, origin = self.Data.read_batch(open_train_file, batch_n, self.mode)
             batch_n += 1
             n_decode_instance += sources.size(0)
             if self.params.max_decoding_number != 0 and n_decode_instance >= self.params.max_decoding_number:
