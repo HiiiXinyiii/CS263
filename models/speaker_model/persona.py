@@ -59,7 +59,7 @@ class lstm_source(nn.Module):
 
     def forward(self, embedding, length):
         embedding = self.dropout(embedding)
-        packed = pack_padded_sequence(embedding, length, batch_first=True, enforce_sorted=False)
+        packed = pack_padded_sequence(embedding, length.cpu(), batch_first=True, enforce_sorted=False)
         packed_output, (h, c) = self.lstms(packed)
         context, _ = pad_packed_sequence(packed_output, batch_first=True)
         return context, h, c
@@ -85,8 +85,10 @@ class lstm_target(nn.Module):
             self.speaker_linear = nn.Linear(dim, dim)
             self.addressee_linear = nn.Linear(dim, dim)
             self.lstmt = nn.LSTM(dim * 3, dim, num_layers=layer, batch_first=True, bias=False, dropout=params.dropout)
+        # Non-speaker mode
         else:
             self.lstmt = nn.LSTM(dim * 2, dim, num_layers=layer, batch_first=True, bias=False, dropout=params.dropout)
+
         self.atten_feed = attention_feed()
         self.soft_atten = softattention(params)
 
@@ -150,6 +152,7 @@ class lstm(nn.Module):
             pred, h, c = self.decoder(context, h, c, target_embed, speaker_label, addressee_label)
             pred = self.softlinear(pred)
             loss += self.loss_function(pred, targets[:, i + 1])
+
         return loss
 
 
@@ -161,19 +164,25 @@ class persona:
         self.ReadDict()
         self.Data = data(params, self.voc)
 
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if params.cpu:
             self.device = "cpu"
+        else:
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        # Model
         self.Model = lstm(params, len(self.voc), self.Data.EOT)
+        # Init weight
         self.Model.encoder.apply(self.weights_init)
         self.Model.decoder.apply(self.weights_init)
         self.Model.softlinear.apply(self.weights_init)
+        # Move
         self.Model.to(self.device)
 
         self.output = path.join(params.save_folder, params.output_file)
         if self.output != "":
             with open(self.output, "w") as selfoutput:
                 selfoutput.write("")
+
         if self.params.SpeakerMode:
             print("training in speaker mode")
         elif self.params.AddresseeMode:
@@ -188,10 +197,12 @@ class persona:
         except:
             pass
 
+    # Read vocabulary
     def ReadDict(self):
         self.voc = dict()
         with open(path.join(self.params.data_folder, self.params.dictPath), 'r', encoding='utf-8') as doc:
             for line in doc:
+                # use list id as the vocabulary token id
                 self.voc[line.strip()] = len(self.voc)
 
     def test(self):
@@ -221,6 +232,7 @@ class persona:
             with open(self.output, "a") as selfoutput:
                 selfoutput.write("standard perp " + str((1 / math.exp(-total_loss / total_tokens))) + "\n")
 
+    # Update model parameters (no existing torch optimizer)
     def update(self):
         lr = self.params.alpha
         grad_norm = 0
@@ -255,46 +267,59 @@ class persona:
     def train(self):
         if not self.params.no_save:
             self.saveParams()
+
         if self.params.fine_tuning:
+            re_random_weights = None
             if self.params.SpeakerMode or self.params.AddresseeMode:
-                re_random_weights = [
-                    'decoder.persona_embedding.weight']  # Also have to include some layers of the LSTM module...
-            else:
-                re_random_weights = None
-            self.readModel(self.params.save_folder, self.params, fine_tuning_model, re_random_weights)
+                # Also have to include some layers of the LSTM module...
+                re_random_weights = ['decoder.persona_embedding.weight']
+            self.readModel(self.params.save_folder, self.params.fine_tuning_model, re_random_weights)
+
         self.iter = 0
-        start_halving = False
         self.lr = self.params.alpha
+
         print("iter  " + str(self.iter))
         self.test()
+
         while True:
             self.iter += 1
             print("iter  " + str(self.iter))
+
+            # Log iteration information
             if self.output != "":
                 with open(self.output, "a") as selfoutput:
                     selfoutput.write("iter  " + str(self.iter) + "\n")
+
+            # Learning rate halves
             if self.iter > self.params.start_halve:
                 self.lr = self.lr * 0.5
+
             open_train_file = path.join(self.params.data_folder, self.params.train_file)
             END = 0
             batch_n = 0
             while END == 0:
                 self.Model.zero_grad()
-                END, sources, targets, speaker_label, addressee_label, length, _, _ = self.Data.read_batch(
-                    open_train_file, batch_n)
+
+                # Get batch data
+                END, \
+                    sources, targets, \
+                    speaker_label, addressee_label, \
+                    length, _, _ = self.Data.read_batch(open_train_file, batch_n)
                 batch_n += 1
                 if sources is None:
                     continue
-                sources = sources.to(self.device)
-                targets = targets.to(self.device)
-                speaker_label = speaker_label.to(self.device)
-                addressee_label = addressee_label.to(self.device)
+                sources, targets = sources.to(self.device), targets.to(self.device)
+                speaker_label, addressee_label = speaker_label.to(self.device), addressee_label.to(self.device)
                 length = length.to(self.device)
                 self.source_size = sources.size(0)
+
+                # Train
                 self.Model.train()
                 loss = self.Model(sources, targets, length, speaker_label, addressee_label)
                 loss.backward()
                 self.update()
+
+            # Test
             self.test()
             if not self.params.no_save:
                 self.save()
