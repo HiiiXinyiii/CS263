@@ -3,7 +3,7 @@ from datasets import Dataset
 from transformers import GPT2Tokenizer
 
 
-def read_data(path="dataset/test_data.json"):
+def read_data(path="data/test_data.json"):
     with open(path, "r") as file:
         data = json.load(file)
 
