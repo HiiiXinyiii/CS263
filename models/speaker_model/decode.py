@@ -39,4 +39,6 @@ print()
 if __name__ == '__main__':
     model = decode_model(args)
     model.decode()
-# model.test()
+
+    print("***************************** Test ****************************")
+    model.test()
