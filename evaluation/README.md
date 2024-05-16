@@ -21,7 +21,7 @@ Comparative paradigm. Very similar to `GTEval` below. Win/Tie/Loss.
 - Fluency: 
     - PPL (Cross-sentence relevance) [3, 4]
 - Consistency:
-    - C.Score: leverages a referee model to predict consistency between response and persona [4]
+    - C.Score: leverages a referee model to predict consistency between response and persona [4, 7, 8]
 - Diversity:
     - Dist-1/2 [4]
 
@@ -40,3 +40,7 @@ Comparative paradigm. Very similar to `GTEval` below. Win/Tie/Loss.
 [5] https://aclanthology.org/P19-1542.pdf
 
 [6] https://openreview.net/pdf?id=iAIP15cNLIP
+
+[7] https://arxiv.org/pdf/1811.00671
+
+[8] https://arxiv.org/pdf/1905.10033
