@@ -1,0 +1,103 @@
+activist
+policeman
+monarch
+stewardess
+military personnel
+banker
+airplane pilot
+writer
+professor
+driver
+astronaut
+businessperson
+editor
+painter
+salesperson
+criminal
+child
+lawyer
+explorer
+priest
+sportsman
+waiter
+school teacher
+actor
+special agent
+tv/radio presenter
+journalist
+photographer
+manager
+doctor
+scientist
+unemployed
+politician
+detective
+student
+engineer
+clerk
+director
+psychologist
+housewife
+assistant
+musician
+nurse
+Software Developer
+Architect
+Veterinarian
+Chef
+Mechanic
+Florist
+Barista
+Pharmacist
+Realtor
+Graphic Designer
+Librarian
+Security Guard
+Farmer
+Fitness Trainer
+Event Planner
+Dancer
+Physiotherapist
+Dentist
+Social Worker
+Meteorologist
+Anthropologist
+Carpenter
+Plumber
+Electrician
+Sailor
+Historian
+Translator
+Linguist
+Economist
+Biologist
+Mathematician
+Philosopher
+Ethicist
+Astronomer
+Geologist
+Oceanographer
+Paralegal
+Firefighter
+Paramedic
+Archeologist
+Art Director
+Urban Planner
+Industrial Designer
+Conservationist
+Cartographer
+Surveyor
+Tailor
+Jeweler
+Optometrist
+Podiatrist
+Speech Therapist
+Chiropractor
+Acupuncturist
+Nutritionist
+Zoologist
+Toxicologist
+Seismologist
+Hydrologist
+Microbiologist
+Statistician
