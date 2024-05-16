@@ -25,7 +25,7 @@ def _get_ppl(
     logprobs = dist.log_prob(labels)
     logprobs = list(logprobs.cpu().numpy())
     
-    return -np.mean(logprobs)
+    return np.exp(-np.mean(logprobs))
 
 def get_ppl(
     model,
