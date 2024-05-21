@@ -60,7 +60,7 @@ def test(checkpoint="savings/model.cpt", save_result=None):
 
     # Save the result
     if save_result is not None:
-        with open("save_result", "w") as json_file:
+        with open(save_result, "w") as json_file:
             json.dump(res, json_file, indent=4)
 
     return res
