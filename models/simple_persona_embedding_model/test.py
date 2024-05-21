@@ -42,7 +42,10 @@ def test(checkpoint="savings/model.cpt", save_result=None):
     with open("data/val_spc_dataset.json", 'r', encoding="utf-8") as file:
         val_data = json.load(file)
 
-    for i_idx_conversation in range(len(val_data)):
+    len_val_data = len(val_data)
+    for i_idx_conversation in range(len_val_data):
+        print(f"Testing on conversation {i_idx_conversation}/{len_val_data}")
+
         current_conversation = val_data[i_idx_conversation]['conversations']
         tmp_res = {"user1_persona": val_data[i_idx_conversation]["user1_persona"], 
                     "user2_persona": val_data[i_idx_conversation]["user2_persona"],
