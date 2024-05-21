@@ -80,6 +80,7 @@ class PersonaChatbot(nn.Module):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         torch.save(self, file_path)
+        print(f"The current model is save at {file_path}")
 
 
 
