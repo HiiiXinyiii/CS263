@@ -19,7 +19,7 @@ def train():
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     criterion = nn.BCEWithLogitsLoss()
 
-    with open("data\spc_data.json", 'r', encoding="utf-8") as file:
+    with open("data/spc_data.json", 'r', encoding="utf-8") as file:
         train_data = json.load(file)
     len_train_data = len(train_data)
     for i_idx in range(len_train_data):
