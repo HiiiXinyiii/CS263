@@ -42,14 +42,14 @@ def test(checkpoint="savings/model.cpt", save_result=None):
     with open("data/val_spc_dataset.json", 'r', encoding="utf-8") as file:
         val_data = json.load(file)
 
-    for i_idx_conversation in range(len(train_data)):
+    for i_idx_conversation in range(len(val_data)):
         current_conversation = val_data[i_idx_conversation]['conversations']
         tmp_res = {"user1_persona": val_data[i_idx_conversation]["user1_persona"], 
                     "user2_persona": val_data[i_idx_conversation]["user2_persona"],
                     "conversations": []
                 }
         # Iterate all the sentences in the conversation
-        for j_idx_sentence in range(len(current_conversation))
+        for j_idx_sentence in range(len(current_conversation)):
             output_text = generate_response(model, tokenizer, current_conversation[j_idx_sentence]["user"])
             tmp_res["conversations"].append({"user": current_conversation[j_idx_sentence]["user"], "bot": output_text})
 
