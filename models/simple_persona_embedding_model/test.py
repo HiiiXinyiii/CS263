@@ -44,7 +44,7 @@ def test(checkpoint="savings/model.cpt", save_result=None):
 
     len_val_data = len(val_data)
     for i_idx_conversation in range(len_val_data):
-        print(f"Testing on conversation {i_idx_conversation}/{len_val_data}")
+        print(f"Testing on conversation {i_idx_conversation + 1}/{len_val_data}")
 
         current_conversation = val_data[i_idx_conversation]['conversations']
         tmp_res = {"user1_persona": val_data[i_idx_conversation]["user1_persona"], 
