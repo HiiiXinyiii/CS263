@@ -14,6 +14,9 @@
 
 - The model maintains a Embeddings of the persona 
 
+### OpenAI
+
+- Use OpenAI API to generate response
 
 ## Problem
 
