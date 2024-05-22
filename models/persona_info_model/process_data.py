@@ -30,8 +30,8 @@ def combine(mode="train", json_path="data/train_spc_dataset.json", save_path="sa
 
     conversations = []
     for item in data:
-        persona = item["user1_persona"] + " " + item["user2_persona"]
-        for conv in item["conversations"]:
+        persona = item.get("user1_persona", "") + " " + item.get("user2_persona", "")
+        for conv in item.get("conversations", []):
             if mode.lower() == "train":
                 conversations.append(persona + " " + conv.get("user", "") + " " + conv.get("bot", ""))
             else:
