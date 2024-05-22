@@ -21,7 +21,7 @@ def incorporate_persona_info_into_dialogue(dialogue, tokenizer):
 
 
 # 拼接对话上下文和回复
-def combine(mode="train", json_path="data/test_data.json", save_path="savings/processed_conversations.txt"):
+def combine(mode="train", json_path="data/train_spc_dataset.json", save_path="savings/processed_conversations.txt"):
     """
     :param mode: "train" is get both user and bot; "test" is get user
     """
