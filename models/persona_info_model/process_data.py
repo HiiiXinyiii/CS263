@@ -33,9 +33,9 @@ def combine(mode="train", json_path="data/test_data.json", save_path="savings/pr
         persona = item["user1_persona"] + " " + item["user2_persona"]
         for conv in item["conversations"]:
             if mode.lower() == "train":
-                conversations.append(persona + " " + conv["user"] + " " + conv["bot"])
+                conversations.append(persona + " " + conv.get("user", "") + " " + conv.get("bot", ""))
             else:
-                conversations.append(persona + " " + conv["user"])
+                conversations.append(persona + " " + conv.get("user", ""))
 
     # Save path
     if save_path is not None:
