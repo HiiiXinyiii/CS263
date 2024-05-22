@@ -20,6 +20,32 @@ def incorporate_persona_info_into_dialogue(dialogue, tokenizer):
     return tokenizer(concatenated_dialogue).data
 
 
+# 拼接对话上下文和回复
+def combine(mode="train", json_path="data/test_data.json", save_path="savings/processed_conversations.txt"):
+    """
+    :param mode: "train" is get both user and bot; "test" is get user
+    """
+    with open(json_path, "r", encoding='utf-8') as f:
+        data = json.load(f)
+
+    conversations = []
+    for item in data:
+        persona = item["user1_persona"] + " " + item["user2_persona"]
+        for conv in item["conversations"]:
+            if mode.lower() == "train":
+                conversations.append(persona + " " + conv["user"] + " " + conv["bot"])
+            else:
+                conversations.append(persona + " " + conv["user"])
+
+    # Save path
+    if save_path is not None:
+        with open(save_path, 'w', encoding='utf-8') as f:
+            for conv in conversations:
+                f.write(conv + '\n')
+
+    return conversations
+    
+
 if __name__ == "__main__":
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
     encoded_dialogues = [incorporate_persona_info_into_dialogue(dialogue, tokenizer)
