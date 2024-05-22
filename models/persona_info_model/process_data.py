@@ -1,3 +1,4 @@
+import os
 import json
 from datasets import Dataset
 from transformers import GPT2Tokenizer
@@ -39,6 +40,9 @@ def combine(mode="train", json_path="data/train_spc_dataset.json", save_path="sa
 
     # Save path
     if save_path is not None:
+        save_dir = os.path.dirname(save_path)
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
         with open(save_path, 'w', encoding='utf-8') as f:
             for conv in conversations:
                 f.write(conv + '\n')
