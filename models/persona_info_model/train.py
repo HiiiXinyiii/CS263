@@ -3,7 +3,6 @@ import os
 import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer, Trainer, TrainingArguments, TextDataset, DataCollatorForLanguageModeling
 from process_data import *
-from model import Persona
 
 
 def train():
