@@ -36,17 +36,21 @@ def test(save_path="savings/test_result.json"):
     for dp in test_conversations:
         bot_persona = dp["user2_persona"]
         for idx in range(len(dp["conversations"])):
-            history = copy(dp["conversations"][:idx])
-            history.append({
-                "user": dp["conversations"][idx]["user"],
-            })
-            test_data.append({
-                "bot_persona": bot_persona,
-                "history": history,
-                "gt_response": dp["conversations"][idx]["bot"]
-            })
+            try:
+                history = copy(dp["conversations"][:idx])
+                history.append({
+                    "user": dp["conversations"][idx]["user"],
+                })
+                test_data.append({
+                    "bot_persona": bot_persona,
+                    "history": history,
+                    "gt_response": dp["conversations"][idx]["bot"]
+                })
+            except:
+                continue
+        
 
-    print("length of test data: ", len(test_data))
+    print("Length of test data: ", len(test_data))
     if save_path is not None:
         save_dir = os.path.dirname(save_path)
         if not os.path.exists(save_dir):
