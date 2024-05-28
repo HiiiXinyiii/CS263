@@ -21,7 +21,7 @@ def test(save_path="savings/test_result.json"):
 
     with open("data/val_spc_dataset.json", "r", encoding='utf-8') as f:
         data = json.load(f)
-        
+
     len_data = len(data)
     for i_idx, i_item in enumerate(data[0:2]):
         print(f"Testing on conversation {i_idx + 1}/{len_data}")
@@ -43,6 +43,4 @@ def test(save_path="savings/test_result.json"):
 
 if __name__ == "__main__":
     test()
-
-
 

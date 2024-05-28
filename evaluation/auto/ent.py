@@ -5,7 +5,7 @@ import torch
 
 label2score = {
     0: 1.0,
-    1: np.nan,
+    1: 0.0,
     2: -1.0,
 }
 
